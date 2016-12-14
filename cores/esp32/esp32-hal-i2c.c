@@ -67,7 +67,7 @@ i2c_err_t i2cAttachSCL(i2c_t * i2c, int8_t scl)
     if(i2c == NULL){
         return I2C_ERROR_DEV;
     }
-    pinMode(scl, OUTPUT_OPEN_DRAIN);
+    pinMode(scl, OUTPUT_OPEN_DRAIN | PULLUP);
     pinMatrixOutAttach(scl, I2C_SCL_IDX(i2c->num), false, false);
     pinMatrixInAttach(scl, I2C_SCL_IDX(i2c->num), false);
     return I2C_ERROR_OK;
@@ -89,7 +89,7 @@ i2c_err_t i2cAttachSDA(i2c_t * i2c, int8_t sda)
     if(i2c == NULL){
         return I2C_ERROR_DEV;
     }
-    pinMode(sda, OUTPUT_OPEN_DRAIN);
+    pinMode(sda, OUTPUT_OPEN_DRAIN | PULLUP);
     pinMatrixOutAttach(sda, I2C_SDA_IDX(i2c->num), false, false);
     pinMatrixInAttach(sda, I2C_SDA_IDX(i2c->num), false);
     return I2C_ERROR_OK;
@@ -267,7 +267,10 @@ i2c_err_t i2cRead(i2c_t * i2c, uint16_t address, bool addr_10bit, uint8_t * data
             i2cResetFiFo(i2c);
         }
 
-        i2cSetCmd(i2c, cmdIdx++, I2C_CMD_READ, willRead, false, false, false);
+        if(willRead){
+            i2cSetCmd(i2c, cmdIdx++, I2C_CMD_READ, willRead, false, false, false);
+        }
+
         if((len - willRead) > 1) {
             i2cSetCmd(i2c, cmdIdx++, I2C_CMD_END, 0, false, false, false);
         } else {
