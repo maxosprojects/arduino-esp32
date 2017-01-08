@@ -1,0 +1,7 @@
+{
+    "description": "Arduino Wiring-based Framework (ESP32 Core)",
+    "name": "framework-arduinoespressif32",
+    "system": "*",
+    "url": "https://github.com/maxosprojects/arduino-esp32",
+    "version": "1.0.3"
+}
